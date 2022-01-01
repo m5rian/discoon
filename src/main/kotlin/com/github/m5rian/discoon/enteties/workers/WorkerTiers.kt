@@ -1,4 +1,4 @@
-package com.github.m5rian.discoon.enteties
+package com.github.m5rian.discoon.enteties.workers
 
 enum class WorkerTiers(val price: Double) {
 

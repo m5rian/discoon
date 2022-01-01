@@ -29,18 +29,17 @@ object CommandManager : ListenerAdapter() {
     private fun registerCommands(jda: JDA) {
         jda.updateCommands {
             addCommands(
-                Command("ping", "Ping pong"),
-                Command("hire", "Hire a new slave!"),
+                Command("hire", "\uD83D\uDCBC Hire a new slave"),
                 Command("jobs", "Where are you going?"),
-                Command("workers", "What are you doing?"),
-                Command("stats", "Whats my Status?")
+                Command("workers", "\uD83D\uDC77 Get a list of all of your workers"),
+                Command("stats", "\uD83D\uDCC8 Check the stats of your business"),
+                Command("manager", "idk yet")
             )
         }.queue()
     }
 
     @ExperimentalTime
     private fun registerCallbacks(jda: JDA) {
-        jda.onCommand("ping", null) { Ping.onCommand(it) }
         jda.onCommand("hire", null) { Hire.onCommand(it) }
         jda.onCommand("jobs", null) { OpenJobMenu.onCommand(it) }
         jda.onCommand("workers", null) { Workers.onCommand(it) }

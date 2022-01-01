@@ -1,7 +1,7 @@
 package com.github.m5rian.discoon.commands.impl
 
 import com.github.m5rian.discoon.commands.Command
-import com.github.m5rian.discoon.database.Worker
+import com.github.m5rian.discoon.enteties.workers.Worker
 import com.github.m5rian.discoon.database.player
 import com.github.m5rian.discoon.utilities.SelectionMenuManager
 import com.github.m5rian.discoon.utilities.onClick

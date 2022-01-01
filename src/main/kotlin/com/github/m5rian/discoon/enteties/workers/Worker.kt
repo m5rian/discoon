@@ -1,6 +1,7 @@
-package com.github.m5rian.discoon.database
+package com.github.m5rian.discoon.enteties.workers
 
 import com.github.m5rian.discoon.config
+import com.github.m5rian.discoon.database.Player
 import com.github.m5rian.discoon.lifecycles.WorkerIncome
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit
  * @property tier Level of worker.
  */
 data class Worker(
+        val id: String,
         val tier: Short
 ) {
     private var job: Job? = null
