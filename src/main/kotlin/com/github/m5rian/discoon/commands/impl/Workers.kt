@@ -1,8 +1,8 @@
 package com.github.m5rian.discoon.commands.impl
 
 import com.github.m5rian.discoon.commands.Command
-import com.github.m5rian.discoon.enteties.workers.Worker
 import com.github.m5rian.discoon.database.player
+import com.github.m5rian.discoon.enteties.workers.Worker
 import com.github.m5rian.discoon.utilities.SelectionMenuManager
 import com.github.m5rian.discoon.utilities.onClick
 import com.github.m5rian.discoon.utilities.reply
@@ -24,18 +24,24 @@ object Workers : Command {
             tierCount[tier] = workers.count { it.tier == tier }
         }
 
-        val message = StringBuilder(":factory_worker:Workers: `${workers.size}`")
-        tierCount.forEach { (tier, amount) -> message.append("\n**Tier $tier**: `$amount`") }
-        event.reply { text = message.toString() }
-            .addActionRow(SelectionMenu(SelectionMenuManager.generateId().toString()) {
-                this.placeholder = "Upgrade a worker"
-                workerTiers.forEach { addOption("Tier $it", it.toString()) }
-                onClick(event.user) {
-                    val selectedTier = it.selectedOptions!![0].value.toShort()
-                    val workerToUpgrade = it.member!!.player.workers.first { worker -> worker.tier == selectedTier }
-                }
-            })
-            .queue()
+        // Player has no workers
+        if (workers.isEmpty()) {
+            event.reply { text = ":warning:You don't have any workers! Use `/hire` to buy one!" }.queue()
+        }
+        // Player owns at least one worker
+        else {
+            val message = StringBuilder(":factory_worker:Workers: `${workers.size}`")
+            tierCount.forEach { (tier, amount) -> message.append("\n**Tier $tier**: `$amount`") }
+            event.reply { text = message.toString() }
+                .addActionRow(SelectionMenu(SelectionMenuManager.generateId().toString()) {
+                    this.placeholder = "Upgrade a worker"
+                    workerTiers.forEach { addOption("Tier $it", it.toString()) }
+                    onClick(event.user) {
+                        val selectedTier = it.selectedOptions!![0].value.toShort()
+                        val workerToUpgrade = it.member!!.player.workers.first { worker -> worker.tier == selectedTier }
+                    }
+                }).queue()
+        }
     }
 
 }
