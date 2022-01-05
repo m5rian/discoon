@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
  */
 data class Worker(
         val id: String,
-        val tier: Short
+        var tier: Short
 ) {
     private var job: Job? = null
 

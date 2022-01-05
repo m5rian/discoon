@@ -48,6 +48,7 @@ data class Player(
 
     suspend fun removeBalance(amount: Double) = update(inc(Player::balance, -amount)) { it.balance -= amount }
     suspend fun addBalance(amount: Double) = update(inc(Player::balance, amount)) { it.balance += amount }
+    suspend fun addWorker(worker: Worker): Worker = worker.also { update(push(Player::workers, worker)) { p -> p.workers.add(worker) } }
     suspend fun addWorker(tier: Short): Worker = Worker(createId(this.workers.map { it.id }), tier).also { update(push(Player::workers, it)) { p -> p.workers.add(it) } }
     suspend fun removeWorker(worker: Worker) = update(pull(Player::workers, worker)) { it.workers.remove(worker) }
     suspend fun addManager(): Manager = Manager(createId(this.managers.map { it.id })).also { update(push(Player::managers, it)) { p -> p.managers.add(it) } }
