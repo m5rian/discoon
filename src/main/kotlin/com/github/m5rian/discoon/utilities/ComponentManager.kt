@@ -1,6 +1,7 @@
 package com.github.m5rian.discoon.utilities
 
 import kotlinx.coroutines.launch
+import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent
@@ -9,7 +10,7 @@ import net.dv8tion.jda.api.interactions.components.ActionRow
 import net.dv8tion.jda.api.interactions.components.Button
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu
 
-private val ids: MutableList<Int> = mutableListOf()
+val ids: MutableList<Int> = mutableListOf()
 fun generateComponentId(): Int {
     ids.forEachIndexed { i, id -> if (i != id) return i.also { ids.add(i, i) } }
     return ids.size.also { ids.add(ids.size) }
@@ -59,7 +60,23 @@ fun ButtonClickEvent.disableButtons() {
     // Remove waiting buttons
     this.message.buttons
         .mapNotNull { it.id }
-        .forEach { ButtonManager.waitingButtons.remove(it.toInt()) }
+        .forEach {
+            ids.remove(it.toInt())
+            ButtonManager.waitingButtons.remove(it.toInt())
+        }
     // Disable buttons
     this.message.editMessageComponents(ActionRow.of(this.message.buttons.map { it.asDisabled() })).queue()
+}
+
+fun Message.deleteComponents() {
+    this.actionRows.forEach { actionRow ->
+        actionRow.components.forEach { component ->
+            component.id?.let {
+                ids.remove(it.toInt())
+                ButtonManager.waitingButtons.remove(it.toInt())
+                SelectionMenuManager.waitingMenus.remove(it.toInt())
+            }
+        }
+    }
+    this.editMessageComponents().queue()
 }

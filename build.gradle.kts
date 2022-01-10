@@ -6,10 +6,12 @@ val kotlinxVersion: String by project
 val ktorVersion: String by project
 val logbackVersion: String by project
 val kmongoVersion: String by project
+val kotlinguaVersion: String by project
 
 plugins {
     kotlin("jvm") version "1.5.31"
     kotlin("plugin.serialization") version "1.5.30"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "com.github.m5rian"
@@ -18,6 +20,7 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://jitpack.io/")
+    maven(url = "https://m5rian.jfrog.io/artifactory/java")
 }
 
 dependencies {
@@ -35,8 +38,16 @@ dependencies {
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.2.2")
     // Logger
     implementation(group = "ch.qos.logback", name = "logback-classic", version = logbackVersion)
+    // Multi-language handler
+    implementation(group = "com.github.m5rian", name = "Kotlingua", version = kotlinguaVersion)
+}
+
+val jar by tasks.getting(Jar::class) {
+    manifest {
+        attributes["Main-Class"] = "com.github.m5rian.discoon.BotKt"
+    }
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "16"
 }

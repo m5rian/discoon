@@ -28,7 +28,7 @@ data class Player(
      * Stops the income of all workers
      */
     fun stopIncome() {
-        this.workers.forEach { it.stopIncome() }
+        this.workers.forEach { it.stopIncome(this) }
     }
 
     private fun createId(ids: List<String>): String {
@@ -51,7 +51,9 @@ data class Player(
     suspend fun addWorker(worker: Worker): Worker = worker.also { update(push(Player::workers, worker)) { p -> p.workers.add(worker) } }
     suspend fun addWorker(tier: Short): Worker = Worker(createId(this.workers.map { it.id }), tier).also { update(push(Player::workers, it)) { p -> p.workers.add(it) } }
     suspend fun removeWorker(worker: Worker) = update(pull(Player::workers, worker)) { it.workers.remove(worker) }
-    suspend fun addManager(): Manager = Manager(createId(this.managers.map { it.id })).also { update(push(Player::managers, it)) { p -> p.managers.add(it) } }
+    suspend fun addManager(): Manager = Manager(createId(this.managers.map { it.id }), null).also { update(push(Player::managers, it)) { p -> p.managers.add(it) } }
+    suspend fun addManager(manager: Manager): Manager = manager.also { update(push(Player::managers, it)) { p -> p.managers.add(it) } }
+    suspend fun removeManager(manager: Manager) = update(pull(Player::managers, manager)) { it.managers.remove(manager) }
 }
 
 val Member.playerOrNull: Player? get() = Mongo.getAs<Player>("players").findOne(and(Player::userId eq this.id, Player::guildId eq this.guild.id))

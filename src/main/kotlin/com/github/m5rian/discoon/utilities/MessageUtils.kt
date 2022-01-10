@@ -1,5 +1,6 @@
 package com.github.m5rian.discoon.utilities
 
+import com.github.m5rian.kotlingua.ArgumentBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.EmbedBuilder
@@ -7,18 +8,23 @@ import net.dv8tion.jda.api.interactions.Interaction
 import net.dv8tion.jda.api.interactions.components.ComponentInteraction
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyAction
 import net.dv8tion.jda.api.requests.restaction.interactions.UpdateInteractionAction
+import java.awt.Color
 
 data class EmbedDesigner(
-        var text: String? = null
+        var text: String? = null,
+        var colour: String = "#2F3136",
+        var variables: suspend ArgumentBuilder.() -> Unit = {},
+        var transform: Boolean = true
 )
 
-fun Interaction.reply(ephemeral: Boolean = false, embed: EmbedDesigner.() -> Unit): ReplyAction {
+suspend fun Interaction.reply(ephemeral: Boolean = false, embed: EmbedDesigner.() -> Unit): ReplyAction {
     val e = EmbedDesigner().apply(embed)
+    val text = if (e.transform) lang.get(e.text!!, e.variables) else e.text!!
 
     return this.replyEmbeds(EmbedBuilder()
-        .setDescription(e.text)
+        .setDescription(text)
         .setFooter(this.member?.effectiveName, this.member?.effectiveAvatarUrl)
-        .setColor(0x36393f)
+        .setColor(Color.decode(e.colour))
         .build())
         .setEphemeral(ephemeral)
 }
@@ -29,7 +35,8 @@ fun ComponentInteraction.edit(embed: EmbedDesigner.() -> Unit): ReplyAction? {
     return null
 }
 
-fun ComponentInteraction.addToast(message: String): UpdateInteractionAction {
+suspend fun ComponentInteraction.addToast(message: String, variables: suspend ArgumentBuilder.() -> Unit = {}, transform: Boolean = true): UpdateInteractionAction {
+    val message = if (transform) lang.get(message, variables) else message
     val originalEmbed = this@addToast.message.embeds[0]
     val embed = EmbedBuilder(this.message.embeds[0]).apply {
         appendDescription("\n\n> $message")

@@ -36,8 +36,11 @@ data class Worker(
 
     /**
      * Stops earning money.
-     *
      */
-    fun stopIncome() = job?.cancel()
+    fun stopIncome(player: Player) {
+        if (player.managers.none { it.assignedTo == this.id }) {
+            job?.cancel()
+        }
+    }
 
 }

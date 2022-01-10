@@ -5,19 +5,19 @@ import com.github.m5rian.discoon.database.player
 import com.github.m5rian.discoon.utilities.format
 import com.github.m5rian.discoon.utilities.reply
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu
 
 object Stats : Command {
 
     override suspend fun onCommand(event: SlashCommandEvent) {
-        val balance = event.member!!.player.balance
-        val workers = event.member!!.player.workers
-
+        val player = event.member!!.player
         event.reply {
-            text = """
-                :moneybag:Balance: `${balance.format()}$`
-                :construction_worker: `${workers.size}`
-            """.trimIndent()
+            text = "stats"
+            variables = {
+                arg("balance", player.balance.format())
+                arg("workers", player.workers.size)
+                arg("managers", player.managers.size)
+                arg("unassignedManagers", player.managers.count { it.assignedTo == null })
+            }
         }.queue()
     }
 

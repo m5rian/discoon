@@ -1,3 +1,2 @@
-
-rootProject.name = "idleFixer"
+rootProject.name = "Discoon"
 

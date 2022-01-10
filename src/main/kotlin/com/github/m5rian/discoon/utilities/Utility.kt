@@ -1,7 +1,22 @@
 package com.github.m5rian.discoon.utilities
 
+import com.github.m5rian.kotlingua.Kotlingua
+import com.github.m5rian.kotlingua.Lang
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import java.util.*
+
+val Kotlingua.XMAS get() = Lang("xmas", "Christmas")
+
+val lang: Lang
+    get() {
+        val date = Date()
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val month = calendar.get(Calendar.MONTH)
+        return if (month > 10 || month == 0) Kotlingua.XMAS
+        else Kotlingua.defaultLang
+    }
 
 data class GuildMember(val guildId: String, val userId: String)
 

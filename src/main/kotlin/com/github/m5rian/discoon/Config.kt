@@ -10,5 +10,7 @@ import kotlinx.serialization.Serializable
 data class Config(
         val token: String, // Discord bot token
         val databaseConnection: String, // MongoDb connection String
-        val baseIncome: Double // Base income per minute
+        val baseIncome: Double, // Base income per minute
+        val green: String,
+        val red: String
 )

@@ -40,10 +40,10 @@ object CommandManager : ListenerAdapter() {
 
     @ExperimentalTime
     private fun registerCallbacks(jda: JDA) {
-        jda.onCommand("hire", null) { Hire.onCommand(it) }
-        jda.onCommand("jobs", null) { OpenJobMenu.onCommand(it) }
-        jda.onCommand("workers", null) { Workers.onCommand(it) }
-        jda.onCommand("stats", null) { Stats.onCommand(it) }
+        jda.onCommand("hire", null) { Hire.runCommandExecution(it) }
+        jda.onCommand("jobs", null) { OpenJobMenu.runCommandExecution(it) }
+        jda.onCommand("workers", null) { Workers.runCommandExecution(it) }
+        jda.onCommand("stats", null) { Stats.runCommandExecution(it) }
     }
 
 }
