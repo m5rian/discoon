@@ -7,8 +7,6 @@ import com.github.m5rian.discoon.utilities.ButtonManager
 import com.github.m5rian.discoon.utilities.Resource
 import com.github.m5rian.discoon.utilities.SelectionMenuManager
 import com.github.m5rian.discoon.utilities.XMAS
-import com.github.m5rian.kotlingua.Kotlingua
-import com.github.m5rian.kotlingua.Lang
 import com.github.m5rian.kotlingua.kotlingua
 import dev.minn.jda.ktx.injectKTX
 import kotlinx.serialization.decodeFromString
@@ -26,7 +24,7 @@ fun main() {
     kotlingua {
         directory = "languages/"
         defaultLang = ENGLISH_UNITED_KINGDOM
-        loadCustomLanguage(Kotlingua.XMAS)
+        loadCustomLanguage(XMAS)
     }.loadLanguages()
 
     database {

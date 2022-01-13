@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyAction
 import java.util.*
 
-val Kotlingua.XMAS get() = Lang("xmas", "Christmas")
+val XMAS get() = Lang("xmas", "Christmas")
 
 val lang: Lang
     get() {
