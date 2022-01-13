@@ -33,10 +33,10 @@ suspend fun Interaction.reply(ephemeral: Boolean = false, embed: suspend EmbedDe
 }
 
 suspend fun ComponentInteraction.addToast(message: String, variables: suspend ArgumentBuilder.() -> Unit = {}, transform: Boolean = true): UpdateInteractionAction {
-    val message = if (transform) lang.get(message, variables) else message
+    val text = if (transform) lang.get(message, variables) else message
     val originalEmbed = this@addToast.message.embeds[0]
     val embed = EmbedBuilder(this.message.embeds[0]).apply {
-        appendDescription("\n\n> $message")
+        appendDescription("\n\n> $text")
     }
 
     commandsCoroutine.launch {
