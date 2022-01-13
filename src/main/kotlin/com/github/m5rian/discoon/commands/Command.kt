@@ -11,6 +11,7 @@ interface Command {
     private fun beforeCommand(event: SlashCommandEvent) {
         val guildMember = GuildMember(event.guild!!.id, event.member!!.id)
 
+        /*
         if (event.name != "workers" && Workers.openMenus.containsKey(guildMember)) {
             val url = Workers.openMenus[guildMember]!!.split("/")
             val messageId = url[url.size - 1]
@@ -20,6 +21,7 @@ interface Command {
                 Workers.closeMenu(guildMember, it)
             }
         }
+         */
     }
 
     suspend fun runCommandExecution(event: SlashCommandEvent) {

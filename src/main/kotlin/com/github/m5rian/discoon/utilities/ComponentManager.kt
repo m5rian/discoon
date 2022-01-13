@@ -17,19 +17,21 @@ fun generateComponentId(): Int {
 }
 
 object SelectionMenuManager : ListenerAdapter() {
-    data class Data(val user: User, val callback: (event: SelectionMenuEvent) -> Unit)
+    data class Data(val user: User, val callback: suspend (event: SelectionMenuEvent) -> Unit)
 
     val waitingMenus = mutableMapOf<Int, Data>()
 
-    override fun onSelectionMenu(event: SelectionMenuEvent) {
-        val data = waitingMenus[event.componentId.toInt()] ?: return
-        if (data.user == event.user) {
-            data.callback.invoke(event)
+    override  fun onSelectionMenu(event: SelectionMenuEvent) {
+        listenerCoroutine.launch {
+            val data = waitingMenus[event.componentId.toInt()] ?: return@launch
+            if (data.user == event.user) {
+                data.callback.invoke(event)
+            }
         }
     }
 }
 
-fun SelectionMenu.Builder.onClick(user: User, callback: (event: SelectionMenuEvent) -> Unit) {
+fun SelectionMenu.Builder.onClick(user: User, callback: suspend (event: SelectionMenuEvent) -> Unit) {
     SelectionMenuManager.waitingMenus[this.id.toInt()] = SelectionMenuManager.Data(user, callback)
 }
 
