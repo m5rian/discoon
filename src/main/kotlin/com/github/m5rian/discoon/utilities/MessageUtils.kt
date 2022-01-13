@@ -32,12 +32,6 @@ suspend fun Interaction.reply(ephemeral: Boolean = false, embed: suspend EmbedDe
         .addActionRows(e.components)
 }
 
-fun ComponentInteraction.edit(embed: EmbedDesigner.() -> Unit): ReplyAction? {
-    val e = EmbedDesigner().apply(embed)
-
-    return null
-}
-
 suspend fun ComponentInteraction.addToast(message: String, variables: suspend ArgumentBuilder.() -> Unit = {}, transform: Boolean = true): UpdateInteractionAction {
     val message = if (transform) lang.get(message, variables) else message
     val originalEmbed = this@addToast.message.embeds[0]
