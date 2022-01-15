@@ -40,12 +40,12 @@ object CommandManager : ListenerAdapter() {
 
     @ExperimentalTime
     private fun registerCallbacks(jda: JDA) {
+        jda.onCommand("stats") { Stats.runCommandExecution(it) }
+        jda.onCommand("leaderboard") { Leaderboard.runCommandExecution(it) }
         jda.onCommand("hire") { Hire.runCommandExecution(it) }
-        jda.onCommand("jobs") { OpenJobMenu.runCommandExecution(it) }
         jda.onCommand("workers") { Workers.runCommandExecution(it) }
         jda.onCommand("upgrade") { Upgrade.runCommandExecution(it) }
         jda.onCommand("assign") { Assign.runCommandExecution(it) }
-        jda.onCommand("stats") { Stats.runCommandExecution(it) }
     }
 
 }

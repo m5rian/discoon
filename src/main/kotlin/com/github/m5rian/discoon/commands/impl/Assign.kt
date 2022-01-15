@@ -1,6 +1,7 @@
 package com.github.m5rian.discoon.commands.impl
 
 import com.github.m5rian.discoon.commands.Command
+import com.github.m5rian.discoon.commands.queue
 import com.github.m5rian.discoon.database.Player
 import com.github.m5rian.discoon.database.player
 import com.github.m5rian.discoon.enteties.managers.Manager
@@ -44,7 +45,7 @@ object Assign : Command {
                 text = getMessage(player)
                 components = getComponents(player, event.user)
                 transform = false
-            }.queueWithCooldown(event.member!!, ComponentClearCooldown)
+            }.queue(true, ComponentClearCooldown)
         }
     }
 

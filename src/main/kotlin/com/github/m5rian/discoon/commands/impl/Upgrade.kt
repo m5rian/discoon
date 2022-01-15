@@ -1,6 +1,7 @@
 package com.github.m5rian.discoon.commands.impl
 
 import com.github.m5rian.discoon.commands.Command
+import com.github.m5rian.discoon.commands.queue
 import com.github.m5rian.discoon.database.Player
 import com.github.m5rian.discoon.database.player
 import com.github.m5rian.discoon.enteties.workers.Worker
@@ -9,7 +10,6 @@ import com.github.m5rian.discoon.enteties.workers.workerTiers
 import com.github.m5rian.discoon.utilities.*
 import com.github.m5rian.discoon.utilities.cooldown.ComponentClearCooldown
 import dev.minn.jda.ktx.interactions.SelectionMenu
-import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent
 import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
@@ -28,19 +28,6 @@ object Upgrade : Command {
     private val selectedTier = mutableMapOf<String, WorkerTier>()
 
     override suspend fun onCommand(event: SlashCommandEvent) {
-        /*
-        val guildMember = GuildMember(event.guild!!.id, event.member!!.id)
-        if (openMenus.containsKey(guildMember)) {
-            event.reply(true) {
-                text = "workers.alreadyOpened"
-                variables = {
-                    arg("jumpUrl", openMenus[guildMember]!!)
-                }
-            }.queue()
-            return
-        }
-         */
-
         val player = event.member!!.player
         // Player has no workers
         if (player.workers.isEmpty()) {
@@ -51,9 +38,9 @@ object Upgrade : Command {
             val selectTier = SelectionMenu(generateComponentId().toString()) {
                 this.placeholder = lang.get("workers.selection.placeholder")
                 countTiers(player.workers).forEach { (tier, _) ->
-                        println(tier)
-                        val label = lang.get("workers.selection.tier") { it.arg("tier", tier) }
-                        addOption(label, tier.toString())
+                    println(tier)
+                    val label = lang.get("workers.selection.tier") { it.arg("tier", tier) }
+                    addOption(label, tier.toString())
                 }
                 onClick(event.user) { onWorkerTierSelect(it) }
             }
@@ -73,7 +60,7 @@ object Upgrade : Command {
             }
                 .addActionRow(selectTier)
                 .addActionRow(upgradeOne, upgradeTen, upgradeHundred)
-                .queueWithCooldown(event.member!!, ComponentClearCooldown)
+                .queue(true, ComponentClearCooldown)
         }
     }
 

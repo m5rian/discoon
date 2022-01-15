@@ -1,14 +1,10 @@
 package com.github.m5rian.discoon.utilities
 
 import com.github.m5rian.discoon.enteties.workers.Worker
-import com.github.m5rian.discoon.utilities.cooldown.Cooldown
 import com.github.m5rian.kotlingua.Kotlingua
 import com.github.m5rian.kotlingua.Lang
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import net.dv8tion.jda.api.entities.Member
-import net.dv8tion.jda.api.requests.restaction.interactions.ReplyAction
 import java.util.*
 
 val XMAS get() = Lang("xmas", "Christmas")
@@ -40,19 +36,4 @@ fun countTiers(workers: MutableList<Worker>): Map<Short, Int> {
         tierCount[tier] = workers.count { it.tier == tier }
     }
     return tierCount
-}
-
-fun ReplyAction.queueWithCooldown(member: Member, cooldown: Cooldown) {
-    val guildMember = GuildMember(member.guild.id, member.id)
-    this.queue {
-        /*
-        it.retrieveOriginal().queue {
-            Upgrade.openMenus[guildMember] = it.jumpUrl
-        }
-         */
-        commandsCoroutine.launch {
-            kotlinx.coroutines.delay(1.inMinutes)
-            it.retrieveOriginal().queue { msg -> cooldown.onCooldownExpire(msg) }
-        }
-    }
 }

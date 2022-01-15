@@ -2,6 +2,7 @@ package com.github.m5rian.discoon.database
 
 import com.github.m5rian.discoon.enteties.managers.Manager
 import com.github.m5rian.discoon.enteties.workers.Worker
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.dv8tion.jda.api.entities.Member
@@ -69,5 +70,6 @@ val Member.player: Player
                 workers = mutableListOf(),
                 managers = mutableListOf()
             )
+            runBlocking { player.addWorker(1) }
             return player.also { Mongo.getAs<Player>("players").insertOne(player) }
         }
