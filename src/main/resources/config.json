@@ -1,0 +1,7 @@
+{
+  "token": "TOKEN",
+  "databaseConnection": "DATABASE_STRING",
+  "baseIncome": 20.0,
+  "green": "#0CB04A",
+  "red": "#FF3A2F"
+}
